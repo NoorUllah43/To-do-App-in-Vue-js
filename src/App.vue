@@ -31,6 +31,18 @@ const DeleteTask = () => {
   tasks.value = tasks.value.filter((task) => task.id !== taskId);
   localStorage.setItem("tasks", JSON.stringify(tasks.value));
 };
+
+const isCompleted = (id) => {
+  tasks.value = tasks.value.map((task) => {
+    if (task.id === id) {
+      return { ...task, completed: !task.completed };
+    }
+    return task;
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks.value));
+  
+}
+
 </script>
 
 <template>
@@ -42,7 +54,7 @@ const DeleteTask = () => {
     </div>
     <ul class="task-list">
       <li v-for="task in tasks" :key="task.id" :data-id="task.id">
-        <input type="checkbox" v-model="task.completed" />
+        <input type="checkbox" :checked="task.completed" @change="isCompleted(task.id)" />
         <span
           :style="{ textDecoration: task.completed ? 'line-through' : 'none' }"
           >{{ task.text }}</span
